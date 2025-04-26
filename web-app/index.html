@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quick Tax Calculator</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+
+<body class="relative bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center min-h-screen transition-all duration-500">
+  
+  <!-- Background Image -->
+  <div class="fixed inset-0 bg-cover bg-center opacity-90 z-0" style="background-image: url('https://i.pinimg.com/736x/9b/df/75/9bdf7507eee73f8b2c61cd7deff14e16.jpg');"></div>
+
+  <!-- Dark mode toggle -->
+  <button id="toggleDark" class="fixed top-4 right-4 bg-gray-800 text-white dark:bg-gray-200 dark:text-black p-2 rounded-full shadow-lg z-10">
+    🌙
+  </button>
+
+  <!-- Spacer where the logo was -->
+  <div class="h-24 z-10"></div>
+
+  <!-- Main Card -->
+  <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl w-96 animate-slideUp z-10">
+    <h1 class="text-3xl font-bold mb-6 text-center dark:text-white">Quick Tax Calculator</h1>
+    
+    <input id="income" type="number" placeholder="Annual Income" class="border p-3 w-full mb-4 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
+    <input id="deductions" type="number" placeholder="Deductions" class="border p-3 w-full mb-4 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
+    
+    <button id="calculate" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded w-full transition duration-300">Calculate</button>
+    
+    <div id="result" class="mt-5 text-center font-semibold dark:text-gray-200"></div>
+
+    <h3 class="mt-6 text-lg font-semibold text-center dark:text-white">Tax Regime Comparison</h3>
+    <table class="min-w-full bg-white dark:bg-gray-700 text-center mt-4 rounded-lg shadow-lg">
+      <thead>
+        <tr>
+          <th class="py-2 px-4 border-b">Income Slab</th>
+          <th class="py-2 px-4 border-b">Old Regime Tax Rates</th>
+          <th class="py-2 px-4 border-b">New Regime Tax Rates</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="py-2 px-4 border-b">Up to ₹2.5 Lakh</td>
+          <td class="py-2 px-4 border-b">No Tax</td>
+          <td class="py-2 px-4 border-b">No Tax</td>
+        </tr>
+        <tr>
+          <td class="py-2 px-4 border-b">₹2.5 Lakh to ₹5 Lakh</td>
+          <td class="py-2 px-4 border-b">5%</td>
+          <td class="py-2 px-4 border-b">5%</td>
+        </tr>
+        <tr>
+          <td class="py-2 px-4 border-b">₹5 Lakh to ₹10 Lakh</td>
+          <td class="py-2 px-4 border-b">20%</td>
+          <td class="py-2 px-4 border-b">10%</td>
+        </tr>
+        <tr>
+          <td class="py-2 px-4 border-b">Above ₹10 Lakh</td>
+          <td class="py-2 px-4 border-b">30%</td>
+          <td class="py-2 px-4 border-b">20% to 30%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="mt-6 text-lg font-semibold text-center dark:text-white">Tax Saving Suggestions</h3>
+    <ul class="list-disc pl-6 dark:text-gray-200 mt-2">
+      <li>Invest in PPF (Public Provident Fund) to claim deductions under Section 80C.</li>
+      <li>Contribute to EPF (Employees' Provident Fund) for tax-saving benefits.</li>
+      <li>Make use of NPS (National Pension System) for additional deductions under Section 80CCD(1B).</li>
+      <li>Consider taking a home loan and claiming deductions for principal repayment under Section 80C and interest under Section 24(b).</li>
+      <li>Invest in tax-saving fixed deposits for deductions under Section 80C.</li>
+      <li>Opt for health insurance under Section 80D for premium deductions.</li>
+    </ul>
+
+    <a href="dashboard.html" class="block text-center mt-6 text-purple-700 dark:text-purple-300 underline">Go to Dashboard ➔</a>
+  </div>
+
+  <script>
+    // Dark mode toggle
+    const toggleBtn = document.getElementById('toggleDark');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
+
+    // Calculation logic
+    document.getElementById('calculate').addEventListener('click', function() {
+      const income = parseFloat(document.getElementById('income').value);
+      const deductions = parseFloat(document.getElementById('deductions').value);
+      
+      if (isNaN(income) || isNaN(deductions)) {
+        alert("Please enter valid values.");
+        return;
+      }
+
+      // Old Regime Tax Calculation
+      const oldRegimeTax = income <= 250000 ? 0 :
+                           income <= 500000 ? (income - 250000) * 0.05 :
+                           income <= 1000000 ? 250000 * 0.05 + (income - 500000) * 0.2 :
+                           250000 * 0.05 + 500000 * 0.2 + (income - 1000000) * 0.3;
+
+      // New Regime Tax Calculation
+      const newRegimeTax = income <= 250000 ? 0 :
+                           income <= 500000 ? (income - 250000) * 0.05 :
+                           income <= 750000 ? 250000 * 0.05 + (income - 500000) * 0.1 :
+                           income <= 1000000 ? 250000 * 0.05 + 250000 * 0.1 + (income - 750000) * 0.15 :
+                           income <= 1250000 ? 250000 * 0.05 + 250000 * 0.1 + 250000 * 0.15 + (income - 1000000) * 0.2 :
+                           income <= 1500000 ? 250000 * 0.05 + 250000 * 0.1 + 250000 * 0.15 + 250000 * 0.2 + (income - 1250000) * 0.25 :
+                           250000 * 0.05 + 250000 * 0.1 + 250000 * 0.15 + 250000 * 0.2 + 250000 * 0.25 + (income - 1500000) * 0.3;
+
+      // Calculate taxable income and other details
+      const taxableIncome = income - deductions;
+      const exemption = deductions;  // assuming deduction is the exemption amount for simplicity
+      const taxPayable = Math.min(oldRegimeTax, newRegimeTax);
+
+      // Display Results and Recommendation
+      let regimeRecommendation = oldRegimeTax < newRegimeTax ? "Old Regime is more beneficial." : "New Regime is more beneficial.";
+      const result = ` 
+        <p>Total Income: ₹${income}</p>
+        <p>Taxable Income: ₹${taxableIncome}</p>
+        <p>Exemption and Deduction: ₹${exemption}</p>
+        <p>Tax Payable: ₹${taxPayable}</p>
+        <p>Recommendation: ${regimeRecommendation}</p>
+      `;
+      document.getElementById('result').innerHTML = result;
+      
+      // Store data in localStorage for dashboard page
+      localStorage.setItem('totalIncome', income);
+      localStorage.setItem('taxableIncome', taxableIncome);
+      localStorage.setItem('deductions', deductions);
+      localStorage.setItem('taxPayable', taxPayable);
+      localStorage.setItem('regimeRecommendation', regimeRecommendation);
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -27,6 +27,10 @@ This project addresses these issues by offering automation and clarity in filing
 - 💡 **Tax-Saving Suggestions**
 - 📊 **Web-Based Dashboard**
 
+## Screenshots 
+![Web Based Income Tax Screenshot](WebBased%20IncomeTax%20snap.png)
+
+
 ## 🛠️ Tech Stack
 
 - **Frontend:** HTML, CSS, JavaScript (for both Chrome Extension & Web UI)
